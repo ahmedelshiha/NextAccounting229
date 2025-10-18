@@ -111,12 +111,13 @@ export function useSystemHealth(
   }
 
   // SWR configuration
+  const endpoint = HEALTH_CHECK_CONFIG.endpoint
   const { data, error, mutate, isLoading } = useSWR<SystemHealth>(
-    enabled ? HEALTH_CHECK_CONFIG.endpoint : null,
+    enabled ? endpoint : null,
     fetcher,
     {
-      // Polling configuration
-      revalidateInterval: enabled ? interval : 0,
+      // Polling configuration (SWR v2 uses refreshInterval)
+      refreshInterval: enabled ? interval : 0,
       revalidateOnFocus: false,
       revalidateOnReconnect: true,
 

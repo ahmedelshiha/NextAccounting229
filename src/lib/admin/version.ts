@@ -1,9 +1,11 @@
+import packageJson from '../../../package.json'
+
 /**
  * Admin Dashboard Version Utilities
- * 
+ *
  * Provides version and build information for the admin footer.
  * Detects app version from environment variables, package.json, or fallback defaults.
- * 
+ *
  * @module @/lib/admin/version
  */
 
@@ -24,12 +26,14 @@ export function getAppVersion(): string {
     return envVersion.startsWith('v') ? envVersion : `v${envVersion}`
   }
 
-  // Try to get from package.json
+  // Try to get from package.json (imported as JSON)
   try {
-    // eslint-disable-next-line global-require
-    const pkg = require('../../package.json')
-    if (pkg.version) {
-      return `v${pkg.version}`
+    // package.json is imported at build time; ensure resolveJsonModule is enabled in tsconfig
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if ((packageJson as any)?.version) {
+      // Ensure version has leading 'v'
+      const v = (packageJson as any).version as string
+      return v.startsWith('v') ? v : `v${v}`
     }
   } catch {
     // package.json import failed, continue to fallback

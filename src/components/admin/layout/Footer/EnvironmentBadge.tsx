@@ -13,12 +13,6 @@ import { useMemo } from 'react'
 import { AlertCircle } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-import {
   getEnvironment,
   getEnvironmentColor,
   getEnvironmentLabel,
@@ -56,7 +50,7 @@ export function EnvironmentBadge({
 
   const colorClass = BADGE_COLORS[color] || BADGE_COLORS.orange
   const badge = (
-    <Badge className={`${colorClass} border flex items-center gap-1 px-2 py-0.5`}>
+    <Badge title={description} className={`${colorClass} border flex items-center gap-1 px-2 py-0.5`}>
       {!compact && environment === 'production' && (
         <AlertCircle className="h-3 w-3" aria-hidden="true" />
       )}
@@ -64,21 +58,7 @@ export function EnvironmentBadge({
     </Badge>
   )
 
-  // Wrap with tooltip in full mode
-  if (compact) {
-    return badge
-  }
-
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>{badge}</TooltipTrigger>
-        <TooltipContent side="top" className="text-xs">
-          {description}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  )
+  return badge
 }
 
 export default EnvironmentBadge

@@ -11,15 +11,15 @@
  * Represents the health status of a single system component (database, Redis, API)
  */
 export interface HealthCheck {
-  /** Status of the check: 'operational' | 'degraded' | 'outage' */
-  status: 'operational' | 'degraded' | 'outage'
-  
+  /** Status of the check: 'operational' | 'degraded' | 'outage' | 'unknown' */
+  status: 'operational' | 'degraded' | 'outage' | 'unknown'
+
   /** Response latency in milliseconds */
   latency: number
-  
+
   /** Error message if check failed (optional) */
   error?: string
-  
+
   /** ISO timestamp of last successful check */
   lastChecked: string
 }
@@ -74,15 +74,18 @@ export interface FooterLink {
 export interface AdminFooterProps {
   /** Additional CSS classes to apply to footer element */
   className?: string
-  
+
   /** Hide system health status display */
   hideHealth?: boolean
-  
+
   /** Hide environment badge (Production/Staging/Dev) */
   hideEnvironment?: boolean
-  
+
   /** Custom quick links to override defaults */
   customLinks?: FooterLink[]
+
+  /** Current sidebar collapsed state (optional) */
+  sidebarCollapsed?: boolean
 }
 
 /**
@@ -203,6 +206,7 @@ export interface SystemHealthResponse {
     api: {
       status: string
       latency: number
+      error?: string
     }
   }
   timestamp: string
